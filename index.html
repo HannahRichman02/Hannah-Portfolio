@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hannah Richman — Portfolio</title>
+  <meta name="description" content="2D animator and visual developer. Demo reel, design lab, and contact.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/content.js"></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <div data-mount="header"></div>
+  <div data-mount="ticker"></div>
+
+  <main class="page" id="landing">
+
+    <section class="headline" aria-labelledby="page-title">
+      <span class="headline__issue mono" id="issue-label"></span>
+      <h1 id="page-title" class="sr-only">Hannah Richman</h1>
+      <span class="headline__top" id="hl-top"></span>
+      <span class="headline__big" id="hl-big"></span>
+      <span class="rule-thick" aria-hidden="true"></span>
+      <span class="headline__sub" id="hl-sub"></span>
+
+      <span class="sticker sticker--accent" style="left: 6%; top: 78%;">2D &amp; DESIGNING</span>
+      <span class="tape tape--cream" style="right: 14%; top: 8%;"></span>
+      <span class="tape" style="left: 2%; top: 28%; transform: rotate(18deg);"></span>
+
+      <p class="headline__blurb" id="hl-blurb"></p>
+    </section>
+
+    <section class="reel" aria-label="Demo reel">
+      <div id="reel-mount"></div>
+    </section>
+
+  </main>
+
+  <div data-mount="footer"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const C = window.HR.content;
+      const L = C.landing || {};
+      document.getElementById("issue-label").textContent = L.issueLabel || "";
+      document.getElementById("hl-top").textContent = L.headlineTop || "";
+      document.getElementById("hl-big").textContent = L.headlineBig || "";
+      document.getElementById("hl-sub").textContent = L.headlineSub || "";
+      document.getElementById("hl-blurb").textContent = L.blurb || "";
+
+      window.HR.renderTicker(L.tickerLeft, L.tickerRight);
+
+      window.HR.embedReel(
+        document.getElementById("reel-mount"),
+        L.reel,
+        L.reelLabel
+      );
+    });
+  </script>
+
+</body>
+</html>

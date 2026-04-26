@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Lab — Hannah Richman</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/content.js"></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <div data-mount="header"></div>
+  <div data-mount="ticker"></div>
+
+  <main class="page" id="design">
+
+    <section class="headline">
+      <span class="headline__issue mono" id="issue-label"></span>
+      <span class="headline__top" id="hl-top"></span>
+      <span class="headline__big" id="hl-big"></span>
+      <span class="rule-thick" aria-hidden="true"></span>
+      <span class="headline__sub" id="hl-sub"></span>
+
+      <span class="sticker" style="right: 4%; top: 70%;">2D &amp; IDEATING</span>
+      <span class="tape tape--accent" style="left: 18%; top: 4%;"></span>
+
+      <p class="headline__blurb" id="hl-blurb"></p>
+    </section>
+
+    <section class="project-grid" id="project-grid" aria-label="Projects"></section>
+
+  </main>
+
+  <div data-mount="footer"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const C = window.HR.content;
+      const D = C.design || {};
+      document.getElementById("issue-label").textContent = D.issueLabel || "";
+      document.getElementById("hl-top").textContent = D.headlineTop || "";
+      document.getElementById("hl-big").textContent = D.headlineBig || "";
+      document.getElementById("hl-sub").textContent = D.headlineSub || "";
+      document.getElementById("hl-blurb").textContent = D.blurb || "";
+
+      window.HR.renderTicker(["DESIGN LAB","CONCEPT","COLOR","CHARS","FX","SKETCH"], ["VOL · 02"]);
+
+      const grid = document.getElementById("project-grid");
+      const projects = C.projects || [];
+      const esc = window.HR.escape;
+      grid.innerHTML = projects.map((p, i) => {
+        const num = String(i + 1).padStart(2, "0");
+        const isFallback = !p.cover;
+        const cover = isFallback
+          ? `<span>${esc(p.title)}</span>`
+          : `<img src="${esc(p.cover)}" alt="${esc(p.title)}" data-fallback-title="${esc(p.title)}">`;
+        return `
+          <a class="project-card" href="project.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.title)}">
+            <div class="project-card__cover ${isFallback ? "is-fallback" : ""}">${cover}</div>
+            <div class="project-card__meta">
+              <div>
+                <h3>${esc(p.title)}</h3>
+                <span class="sub">${esc(p.subtitle || "")}</span>
+              </div>
+              <span class="num">N° ${num}</span>
+            </div>
+          </a>
+        `;
+      }).join("");
+
+      window.HR.bindFallbacks(grid);
+    });
+  </script>
+
+</body>
+</html>

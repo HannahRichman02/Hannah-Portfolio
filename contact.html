@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Hannah Richman</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/content.js"></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <div data-mount="header"></div>
+  <div data-mount="ticker"></div>
+
+  <main class="page" id="contact">
+
+    <section class="headline">
+      <span class="headline__issue mono" id="issue-label"></span>
+      <span class="headline__top" id="hl-top"></span>
+      <span class="headline__big" id="hl-big"></span>
+      <span class="rule-thick" aria-hidden="true"></span>
+      <span class="headline__sub" id="hl-sub"></span>
+
+      <span class="sticker" style="right: 6%; top: 70%;">SAY HI</span>
+      <span class="tape tape--accent" style="left: 12%; top: 6%; transform: rotate(-22deg);"></span>
+    </section>
+
+    <section class="contact-grid">
+
+      <figure class="contact-illu" id="contact-illu" aria-label="Self portrait"></figure>
+
+      <div class="contact-card">
+
+        <a class="contact-row" id="email-row" href="#">
+          <span id="email-label"></span>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+
+        <a class="contact-row" id="resume-row" href="#" target="_blank" rel="noopener">
+          <span id="resume-label"></span>
+          <span class="arrow" aria-hidden="true">&darr;</span>
+        </a>
+
+        <div class="about">
+          <h2 id="about-title"></h2>
+          <div id="about-text" class="about__text"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <div data-mount="footer"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const C = window.HR.content;
+      const K = C.contact || {};
+      const esc = window.HR.escape;
+
+      document.getElementById("issue-label").textContent = K.issueLabel || "";
+      document.getElementById("hl-top").textContent = K.headlineTop || "";
+      document.getElementById("hl-big").textContent = K.headlineBig || "";
+      document.getElementById("hl-sub").textContent = K.headlineSub || "";
+
+      window.HR.renderTicker(["CONTACT","FREELANCE","HIRE ME","HELLO"], ["VOL · 04"]);
+
+      document.getElementById("contact-illu").innerHTML =
+        window.HR.imageWithFallback(K.illustration, K.illustrationAlt || "Self portrait", "PORTRAIT");
+
+      const emailRow = document.getElementById("email-row");
+      emailRow.href = "mailto:" + (K.email || "");
+      document.getElementById("email-label").textContent = (K.emailLabel || "EMAIL") + " · " + (K.email || "");
+
+      const resumeRow = document.getElementById("resume-row");
+      resumeRow.href = K.resumeUrl || "#";
+      resumeRow.setAttribute("download", "");
+      document.getElementById("resume-label").textContent = K.resumeLabel || "DOWNLOAD RESUME";
+
+      document.getElementById("about-title").textContent = K.aboutTitle || "ABOUT";
+      document.getElementById("about-text").innerHTML = window.HR.formatText(K.aboutText || "");
+    });
+  </script>
+
+</body>
+</html>

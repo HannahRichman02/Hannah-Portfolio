@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vault — Hannah Richman</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/content.js"></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <div data-mount="header"></div>
+  <div data-mount="ticker"></div>
+
+  <main class="page" id="vault">
+
+    <section class="headline">
+      <span class="headline__issue mono" id="issue-label"></span>
+      <span class="headline__top" id="hl-top"></span>
+      <span class="headline__big" id="hl-big"></span>
+      <span class="rule-thick" aria-hidden="true"></span>
+      <span class="headline__sub" id="hl-sub"></span>
+
+      <span class="sticker sticker--accent" style="left: 4%; top: 78%;">RESTRICTED</span>
+    </section>
+
+    <section id="vault-locked" class="vault" aria-label="Vault password gate">
+      <p class="block-text" id="vault-blurb-locked" style="margin: 0 auto; max-width: 480px;"></p>
+      <form class="vault__form" id="vault-form" autocomplete="off">
+        <label class="sr-only" for="vault-password">Password</label>
+        <input class="vault__input"
+               id="vault-password"
+               name="vault-password"
+               type="password"
+               autocomplete="off"
+               spellcheck="false">
+        <button class="vault__btn" type="submit" id="vault-btn">OPEN</button>
+      </form>
+      <p class="vault__error" id="vault-error"></p>
+    </section>
+
+    <section id="vault-unlocked" class="reel" aria-label="Vault reel" style="display:none;">
+      <p class="block-text" id="vault-blurb-unlocked" style="max-width: 540px; margin-bottom: 16px;"></p>
+      <div id="vault-reel-mount"></div>
+    </section>
+
+  </main>
+
+  <div data-mount="footer"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const C = window.HR.content;
+      const V = C.vault || {};
+      document.getElementById("issue-label").textContent = V.issueLabel || "";
+      document.getElementById("hl-top").textContent = V.headlineTop || "";
+      document.getElementById("hl-big").textContent = V.headlineBig || "";
+      document.getElementById("hl-sub").textContent = V.headlineSub || "";
+      document.getElementById("vault-blurb-locked").textContent = V.lockedBlurb || "";
+      document.getElementById("vault-blurb-unlocked").textContent = V.unlockedBlurb || "";
+      document.getElementById("vault-error").textContent = V.wrongLabel || "WRONG. TRY AGAIN.";
+      document.getElementById("vault-btn").textContent = V.unlockButton || "OPEN";
+      document.getElementById("vault-password").placeholder = V.promptLabel || "ENTER PASSWORD";
+
+      window.HR.renderTicker(["VAULT","RESTRICTED","CLIENT WORK"], ["VOL · 03"]);
+
+      const lockedEl = document.getElementById("vault-locked");
+      const unlockedEl = document.getElementById("vault-unlocked");
+
+      function unlock() {
+        lockedEl.style.display = "none";
+        unlockedEl.style.display = "block";
+        try { sessionStorage.setItem("hr_vault", "open"); } catch (_) {}
+        window.HR.embedReel(
+          document.getElementById("vault-reel-mount"),
+          V.reel,
+          V.reelLabel
+        );
+      }
+
+      try {
+        if (sessionStorage.getItem("hr_vault") === "open") unlock();
+      } catch (_) {}
+
+      const form = document.getElementById("vault-form");
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const input = document.getElementById("vault-password").value;
+        const wrap = document.getElementById("vault-locked");
+        wrap.classList.remove("is-wrong");
+        const hash = await window.HR.sha256(input);
+        if (hash === (V.passwordHash || "").toLowerCase()) {
+          unlock();
+        } else {
+          wrap.classList.add("is-wrong");
+          document.getElementById("vault-password").value = "";
+          document.getElementById("vault-password").focus();
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

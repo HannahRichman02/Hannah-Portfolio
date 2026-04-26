@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project — Hannah Richman</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Space+Grotesk:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/content.js"></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+
+  <div data-mount="header"></div>
+  <div data-mount="ticker"></div>
+
+  <main class="page" id="project">
+    <a class="project-back" href="design.html">&larr; BACK TO DESIGN LAB</a>
+
+    <section class="headline" style="padding-bottom: 16px;">
+      <span class="headline__issue mono" id="issue-label"></span>
+      <span class="headline__top" id="proj-num"></span>
+      <span class="headline__big" id="proj-title"></span>
+      <span class="rule-thick" aria-hidden="true"></span>
+      <span class="headline__sub mono" id="proj-sub" style="font-family: 'Space Mono', monospace; font-size: clamp(14px, 1.4vw, 18px); letter-spacing: 0.18em; margin-left: 0;"></span>
+    </section>
+
+    <section class="blocks" id="blocks" aria-label="Project content"></section>
+  </main>
+
+  <div data-mount="footer"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const C = window.HR.content;
+      const esc = window.HR.escape;
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+      const idx = (C.projects || []).findIndex(p => p.id === id);
+      const project = idx >= 0 ? C.projects[idx] : null;
+
+      if (!project) {
+        document.getElementById("proj-title").textContent = "NOT FOUND";
+        document.getElementById("proj-sub").textContent = "Try a different project from the design lab.";
+        document.getElementById("issue-label").textContent = "N° 404";
+        return;
+      }
+
+      document.title = project.title + " — Hannah Richman";
+      document.getElementById("issue-label").textContent = "N° " + String(idx + 1).padStart(2, "0");
+      document.getElementById("proj-num").textContent = project.subtitle || "";
+      document.getElementById("proj-title").textContent = project.title;
+      document.getElementById("proj-sub").textContent = "PROJECT FILE / " + project.id.toUpperCase();
+
+      window.HR.renderTicker([project.title, project.subtitle || ""], ["DESIGN LAB"]);
+
+      const fmt = window.HR.formatText;
+      const renderBlock = (b) => {
+        const img = (src, alt) => window.HR.imageWithFallback(src, alt || project.title, project.title);
+        switch ((b.type || "").toLowerCase()) {
+          case "heading":
+            return `<h2 class="block-heading">${esc(b.text || "")}</h2>`;
+          case "text":
+            return `<div class="block-text">${fmt(b.text || "")}</div>`;
+          case "image":
+            return `<figure class="block-image">${img(b.src, b.caption)}${
+              b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ""
+            }</figure>`;
+          case "image-full":
+            return `<figure class="block-image-full">${img(b.src, b.caption)}${
+              b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ""
+            }</figure>`;
+          case "two-images":
+            return `<div class="block-two">
+                      <figure class="block-image">${img(b.srcA, project.title)}</figure>
+                      <figure class="block-image">${img(b.srcB, project.title)}</figure>
+                    </div>`;
+          case "image-text":
+            return `<div class="block-split">
+                      <figure class="block-image">${img(b.src, project.title)}</figure>
+                      <div>${fmt(b.text || "")}</div>
+                    </div>`;
+          case "text-image":
+            return `<div class="block-split block-split--reverse">
+                      <figure class="block-image">${img(b.src, project.title)}</figure>
+                      <div>${fmt(b.text || "")}</div>
+                    </div>`;
+          case "heading-image":
+            return `<div class="block-heading-image">
+                      <figure>
+                        <span class="h">${esc(b.heading || "")}</span>
+                        ${img(b.src, b.heading || project.title)}
+                      </figure>
+                    </div>`;
+          case "spacer":
+            return `<div class="block-spacer"></div>`;
+          default:
+            return "";
+        }
+      };
+
+      document.getElementById("blocks").innerHTML = (project.blocks || []).map(renderBlock).join("");
+    });
+  </script>
+
+</body>
+</html>
