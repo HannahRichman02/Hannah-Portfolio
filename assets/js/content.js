@@ -29,9 +29,8 @@ window.SITE_CONTENT = {
   site: {
     name: "HANNAH RICHMAN",
     short: "H.R.",
-    role: "2D CHARACTER ANIMATOR / 2D FX ANIMATOR",
+    role: "2D FX ANIMATOR",
     year: "2026",
-    location: "OMAHA / NE",
     copyright: "ALL WORK © HANNAH RICHMAN 2026",
 
     /* Favicon — the tiny image shown in the browser tab.
