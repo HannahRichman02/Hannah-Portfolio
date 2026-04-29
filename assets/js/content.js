@@ -31,6 +31,7 @@ window.SITE_CONTENT = {
     short: "H.R.",
     role: "2D FX ANIMATOR",
     year: "2026",
+    location: "SCAD"
     copyright: "ALL WORK © HANNAH RICHMAN 2026",
 
     /* Favicon — the tiny image shown in the browser tab.
