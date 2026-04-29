@@ -31,7 +31,7 @@ window.SITE_CONTENT = {
     short: "H.R.",
     role: "2D FX ANIMATOR",
     year: "2026",
-    location: "SCAD"
+    location: "SCAD",
     copyright: "ALL WORK © HANNAH RICHMAN 2026",
 
     /* Favicon — the tiny image shown in the browser tab.
@@ -178,10 +178,58 @@ window.SITE_CONTENT = {
      To add a project: copy one whole project block (between the
      { and matching }) and paste it inside the [ ] below, then
      change every value.
+
+     OKay my documentation is bad.
+     Take 2 :
+      To add a project:
+      {
+      id: "project-id",
+      title: "Project Title",
+      subtitle: "Year, medium, etc.",
+      cover: "assets/images/projects/project-id/cover.jpg",
+      blocks: [
+        { type: "heading", text: "BIG WORDS" },
+        { type: "text",    text: "A paragraph of writing." },
+        { type: "image",   src: "assets/images/projects/project-id/01.jpg", caption: "optional" },
+        { type: "image-full", src: "..." }
+      ]
+      }
+
+      Add a comma after every curly except the last one to create a list.
      ============================================================ */
   projects: [
-    { type: "heading", text: "BIG WORDS" }
-    
+    {
+      id: "Fire",
+      title: "FIRE DESIGNS",
+      cover: "assets/images/designs/fire/fx_design_firecomp4.png",
+      blocks: [
+        { type: "text",    text: "A collection of Fire Designs from various projects and practice." },
+        { type: "image",   src: "assets/images/designs/fire/fx_design_fire2.png", caption: "*Firewatchers*" },
+        { type: "two-images", srcA: "assets/images/designs/fire/fx_design_fire3.png", srcB: "assets/images/designs/fire/fx_design_fire2.png" },
+        { type: "image-full", src: "assets/images/designs/fire/fire.png" }
+      ] 
+    },
+       {
+      id: "Water",
+      title: "WATER DESIGNS",
+      cover: "assets/images/designs/water/water_running.png",
+      blocks: [
+        { type: "text",    text: "A collection of Water Designs from various projects and practice." },
+        { type: "image-full", src: "assets/images/designs/water/water_running.png" },
+        { type: "image-full", src: "assets/images/designs/water/water_fall.png" }
+      ]
+    },
+    {
+      id: "Smoke",
+      title: "SMOKE DESIGNS",
+      cover: "assets/images/designs/smoke/explosion.png",
+      blocks: [
+        { type: "text",    text: "A collection of Smoke Designs from various projects and practice." },
+        { type: "two-images", srcA: "assets/images/designs/smoke/grenade_designs0085.png", srcB: "assets/images/designs/smoke/grenade_designs0139.png" },
+        { type: "image-full", src: "assets/images/designs/smoke/explosion.png" },
+        { type: "image-full", src: "assets/images/designs/smoke/magic_column_smoke.png" }
+      ]
+      }
   ],
 
   /* ============================================================
@@ -215,10 +263,11 @@ window.SITE_CONTENT = {
     wrongLabel: "WRONG. TRY AGAIN.",
     unlockButton: "OPEN",
     reelLabel: "PRIVATE REEL",
-    reel: {
-      provider: "youtube",
-      id:       "dQw4w9WgXcQ"
-    }
+         reel: {
+           provider: "youtube",
+           id:       "6bfPGx66-0A",
+           poster:   "assets/videos/demo_reel/fx_thumbnail4.png"
+         }
   },
 
   /* ============================================================
