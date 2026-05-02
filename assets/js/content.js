@@ -205,8 +205,8 @@ window.SITE_CONTENT = {
       blocks: [
         { type: "text",    text: "A collection of Fire Designs from various projects and practice." },
         { type: "image",   src: "assets/images/Designs/Fire/FX_Design_Fire2.png", caption: "*Firewatchers*" },
-        { type: "two-images", srcA: "assets/images/designs/fire/fx_design_fire3.png", srcB: "assets/images/designs/fire/fx_design_fire2.png" },
-        { type: "image-full", src: "assets/images/designs/fire/fire.png" }
+        { type: "two-images", srcA: "assets/images/Designs/Fire/FX_Design_Fire3.png", srcB: "assets/images/Designs/Fire/FX_Design_Fire2.png" },
+        { type: "image-full", src: "assets/images/Designs/Fire/Fire.png" }
       ] 
     },
        {
@@ -215,8 +215,8 @@ window.SITE_CONTENT = {
       cover: "assets/images/Designs/Water/Water_Running.png",
       blocks: [
         { type: "text",    text: "A collection of Water Designs from various projects and practice." },
-        { type: "image-full", src: "assets/images/designs/water/water_running.png" },
-        { type: "image-full", src: "assets/images/designs/water/water_fall.png" }
+        { type: "image-full", src: "assets/images/Designs/Water/Water_Running.png" },
+        { type: "image-full", src: "assets/images/Designs/Water/Water_Fall.png" }
       ]
     },
     {
@@ -225,9 +225,9 @@ window.SITE_CONTENT = {
       cover: "assets/images/designs/smoke/explosion.png",
       blocks: [
         { type: "text",    text: "A collection of Smoke Designs from various projects and practice." },
-        { type: "two-images", srcA: "assets/images/designs/smoke/grenade_designs0085.png", srcB: "assets/images/designs/smoke/grenade_designs0139.png" },
-        { type: "image-full", src: "assets/images/designs/smoke/explosion.png" },
-        { type: "image-full", src: "assets/images/designs/smoke/magic_column_smoke.png" }
+        { type: "two-images", srcA: "assets/images/Designs/Smoke/Grenade_Designs0085.png", srcB: "assets/images/Designs/Smoke/Grenade_Designs0139.png" },
+        { type: "image-full", src: "assets/images/Designs/Smoke/Explosion.png" },
+        { type: "image-full", src: "assets/images/Designs/Smoke/Magic_Column_Smoke.png" }
       ]
       }
   ],
