@@ -201,10 +201,10 @@ window.SITE_CONTENT = {
     {
       id: "Fire",
       title: "FIRE DESIGNS",
-      cover: "assets/images/designs/fire/fx_design_firecomp4.png",
+      cover: "assets/images/Designs/Fire/FX_Design_FireComp4.png",
       blocks: [
         { type: "text",    text: "A collection of Fire Designs from various projects and practice." },
-        { type: "image",   src: "assets/images/designs/fire/fx_design_fire2.png", caption: "*Firewatchers*" },
+        { type: "image",   src: "assets/images/Designs/Fire/FX_Design_Fire2.png", caption: "*Firewatchers*" },
         { type: "two-images", srcA: "assets/images/designs/fire/fx_design_fire3.png", srcB: "assets/images/designs/fire/fx_design_fire2.png" },
         { type: "image-full", src: "assets/images/designs/fire/fire.png" }
       ] 
@@ -212,7 +212,7 @@ window.SITE_CONTENT = {
        {
       id: "Water",
       title: "WATER DESIGNS",
-      cover: "assets/images/designs/water/water_running.png",
+      cover: "assets/images/Designs/Water/Water_Running.png",
       blocks: [
         { type: "text",    text: "A collection of Water Designs from various projects and practice." },
         { type: "image-full", src: "assets/images/designs/water/water_running.png" },
