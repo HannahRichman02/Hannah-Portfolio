@@ -222,7 +222,7 @@ window.SITE_CONTENT = {
     {
       id: "Smoke",
       title: "SMOKE DESIGNS",
-      cover: "assets/images/designs/smoke/explosion.png",
+      cover: "assets/images/Designs/Smoke/Explosion.png",
       blocks: [
         { type: "text",    text: "A collection of Smoke Designs from various projects and practice." },
         { type: "two-images", srcA: "assets/images/Designs/Smoke/Grenade_Designs0085.png", srcB: "assets/images/Designs/Smoke/Grenade_Designs0139.png" },
