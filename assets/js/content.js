@@ -245,7 +245,7 @@ window.SITE_CONTENT = {
        3. Copy the long hash that appears.
        4. Paste it as the value of passwordHash below.
 
-     The default password is:  hannah
+     The default password is:  SuperSecretPassword
 
      The reel here uses the same provider rules as the landing
      reel: "youtube", "vimeo", or "file". See the landing notes
@@ -258,7 +258,7 @@ window.SITE_CONTENT = {
     headlineSub: "ROOM",
     lockedBlurb: "Password-protected work. For studios, clients, and friends with the password.",
     unlockedBlurb: "Welcome in. Reel below. Don't share the link.",
-    passwordHash: "fc881aa34d44660e1012dec26ccda0b469d6c8359e91dc674dab4c095b9fe832",
+    passwordHash: "8ca187c92a6a3892735ca9fdcc5af91f4f423ee8cda550158192cfe4219246ad",
     promptLabel: "ENTER PASSWORD",
     wrongLabel: "WRONG. TRY AGAIN.",
     unlockButton: "OPEN",
