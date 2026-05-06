@@ -280,7 +280,7 @@ window.SITE_CONTENT = {
     headlineTop: "LET'S",
     headlineBig: "MAKE",
     headlineSub: "ART",
-    illustration: "assets/images/contact/portrait.png",
+    illustration: "assets/images/Profile_v3.png",
     illustrationAlt: "Self portrait of Hannah",
     email: "hannahrichman.art@gmail.com",
     emailLabel: "WRITE TO HANNAH",
