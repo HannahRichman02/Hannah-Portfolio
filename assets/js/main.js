@@ -268,6 +268,81 @@
       .replace(/'/g, "&#39;");
   }
 
+  /* ---------- Mailto fallback ----------
+     Many machines have no default mail client registered, so a bare
+     mailto: link silently does nothing. This helper rewrites every
+     mailto link inside `root` so that:
+       - the address is always visible in the link text,
+       - clicking copies the address to the clipboard,
+       - a brief "COPIED" confirmation is shown inline,
+       - the native mailto: behavior still fires for users who do
+         have a mail client configured.                              */
+  function bindMailtoFallbacks(root) {
+    const scope = root || document;
+    const links = scope.querySelectorAll('a[href^="mailto:"]');
+    links.forEach(function (a) {
+      if (a.dataset.mailtoBound === "1") return;
+      a.dataset.mailtoBound = "1";
+
+      const address = (a.getAttribute("href") || "").replace(/^mailto:/i, "").split("?")[0].trim();
+      if (!address) return;
+
+      const labelEl = a.querySelector("[data-email-label]") || a.querySelector("#email-label");
+      const baseLabel = labelEl ? labelEl.textContent : a.textContent;
+      const labelHasAddress = baseLabel.toLowerCase().indexOf(address.toLowerCase()) !== -1;
+
+      if (!labelHasAddress) {
+        const newLabel = baseLabel.trim() ? baseLabel.trim() + " · " + address : address;
+        if (labelEl) {
+          labelEl.textContent = newLabel;
+        } else {
+          a.textContent = newLabel;
+        }
+      }
+      a.setAttribute("title", "Click to copy " + address);
+      a.setAttribute("aria-label", "Email " + address + " (click to copy address)");
+
+      a.addEventListener("click", function () {
+        copyText(address);
+        flashCopied(a, address, labelEl);
+      });
+    });
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch(function () { legacyCopy(text); });
+      return;
+    }
+    legacyCopy(text);
+  }
+
+  function legacyCopy(text) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch (e) { /* clipboard not supported; address is still visible */ }
+  }
+
+  function flashCopied(el, address, labelEl) {
+    const target = labelEl || el;
+    if (target.dataset.flashing === "1") return;
+    target.dataset.flashing = "1";
+    const original = target.textContent;
+    target.textContent = "COPIED · " + address;
+    setTimeout(function () {
+      target.textContent = original;
+      delete target.dataset.flashing;
+    }, 1800);
+  }
+
   /* ---------- SHA-256 helper used by vault and hash-tool ---------- */
   async function sha256(text) {
     const buf = new TextEncoder().encode(text);
@@ -287,6 +362,7 @@
     embedReel,
     imageWithFallback,
     bindFallbacks,
+    bindMailtoFallbacks,
     formatText,
     escape,
     sha256
@@ -297,8 +373,12 @@
     renderHeader();
     renderFooter();
     bindFallbacks();
+    bindMailtoFallbacks();
     /* Re-bind whenever new content is injected by page scripts. */
-    new MutationObserver(() => bindFallbacks()).observe(document.body, {
+    new MutationObserver(() => {
+      bindFallbacks();
+      bindMailtoFallbacks();
+    }).observe(document.body, {
       childList: true,
       subtree: true
     });
