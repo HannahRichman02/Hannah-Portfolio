@@ -225,7 +225,7 @@ window.SITE_CONTENT = {
       cover: "assets/images/Designs/Smoke/Explosion.png",
       blocks: [
         { type: "text",    text: "A collection of Smoke Designs from various projects and practice." },
-        { type: "image-full", src: "assets/images/Designs/Smoke/Blue_Purple" },
+        { type: "image-full", src: "assets/images/Designs/Smoke/Blue_Purple.png" },
         { type: "two-images", srcA: "assets/images/Designs/Smoke/Grenade_Designs0085.png", srcB: "assets/images/Designs/Smoke/Grenade_Designs0139.png" },
         { type: "image-full", src: "assets/images/Designs/Smoke/Explosion.png" },
         { type: "image-full", src: "assets/images/Designs/Smoke/Magic_Column_Smoke.png" }
