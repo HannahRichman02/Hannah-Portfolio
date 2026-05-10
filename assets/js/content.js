@@ -130,7 +130,7 @@ window.SITE_CONTENT = {
     headlineTop:   "ANIMATION",
     headlineBig:   "CHARACTERS & FX",
     headlineSub:   "WORKS",
-    blurb:         "[write a blurb]",
+    blurb:         "Check out my Demo Reel below, see the Design Lab for ideation and my Contact page so I can help you achieve all of your FX hopes and dreams!",
     reelLabel:     "DEMO REEL — 2026",
     reel: {
       provider: "file",
@@ -151,7 +151,7 @@ window.SITE_CONTENT = {
     headlineTop: "THE",
     headlineBig: "DESIGN",
     headlineSub: "LAB",
-    blurb: "[write blurb]"
+    blurb: "Click on any category below to see my variety of different fx designs for both project and personal work."
   },
 
   /* ============================================================
@@ -225,6 +225,7 @@ window.SITE_CONTENT = {
       cover: "assets/images/Designs/Smoke/Explosion.png",
       blocks: [
         { type: "text",    text: "A collection of Smoke Designs from various projects and practice." },
+        { type: "image-full", src: "assets/images/Designs/Smoke/Blue_Purple" },
         { type: "two-images", srcA: "assets/images/Designs/Smoke/Grenade_Designs0085.png", srcB: "assets/images/Designs/Smoke/Grenade_Designs0139.png" },
         { type: "image-full", src: "assets/images/Designs/Smoke/Explosion.png" },
         { type: "image-full", src: "assets/images/Designs/Smoke/Magic_Column_Smoke.png" }
