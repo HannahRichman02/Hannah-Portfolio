@@ -95,9 +95,11 @@
   function renderFooter() {
     const slot = document.querySelector("[data-mount='footer']");
     if (!slot) return;
-    const socials = (C.socials || []).map(s =>
-      `<a href="${s.url}" target="_blank" rel="noopener">${escape(s.label)}</a>`
-    ).join("");
+    const socials = (C.socials || []).map(s => {
+      const isMailto = /^mailto:/i.test(s.url || "");
+      const attrs = isMailto ? "" : ` target="_blank" rel="noopener"`;
+      return `<a href="${s.url}"${attrs}>${escape(s.label)}</a>`;
+    }).join("");
     slot.outerHTML = `
       <footer class="footer" role="contentinfo">
         <div class="footer__row">
@@ -343,6 +345,195 @@
     }, 1800);
   }
 
+  /* ---------- Design gallery: relevancy search + lightbox ----------
+     A flat, searchable image gallery with a full-screen viewer.
+
+     Relevancy rules (matches content.js documentation):
+       - Each item has a title and an ordered list of tags. Earlier
+         tags rank higher than later ones.
+       - A query is split into space-separated terms. An item matches
+         if any term is a substring of its title or any tag.
+       - Matched items sort by the EARLIEST matching field first
+         (title counts as earlier than tag 0), then by how many query
+         terms matched, then by their original order.
+       - Items that match nothing still render, dimmed, at the bottom.
+     The viewer arrows / arrow keys walk the list in displayed order. */
+  function initDesignGallery(options) {
+    const opts = options || {};
+    const grid = document.querySelector(opts.grid);
+    if (!grid) return;
+    const searchInput = opts.search ? document.querySelector(opts.search) : null;
+    const countEl = opts.count ? document.querySelector(opts.count) : null;
+
+    const items = (opts.items || []).map((it, i) => ({
+      src: it.src || "",
+      title: it.title || "",
+      tags: Array.isArray(it.tags) ? it.tags.map(t => String(t)) : [],
+      order: i
+    }));
+
+    let view = items.slice();
+
+    function scoreItem(item, terms) {
+      if (!terms.length) return { matched: true, bestIndex: -2, termMatches: 0 };
+      const fields = [{ text: item.title.toLowerCase(), index: -1 }]
+        .concat(item.tags.map((t, idx) => ({ text: t.toLowerCase(), index: idx })));
+      let bestIndex = null;
+      let termMatches = 0;
+      terms.forEach(term => {
+        let termHit = false;
+        fields.forEach(f => {
+          if (f.text.indexOf(term) !== -1) {
+            termHit = true;
+            if (bestIndex === null || f.index < bestIndex) bestIndex = f.index;
+          }
+        });
+        if (termHit) termMatches++;
+      });
+      return { matched: bestIndex !== null, bestIndex: bestIndex, termMatches: termMatches };
+    }
+
+    function compute(query) {
+      const terms = String(query || "").toLowerCase().split(/\s+/).filter(Boolean);
+      const scored = items.map(item => ({ item: item, s: scoreItem(item, terms) }));
+      const matched = scored.filter(r => r.s.matched);
+      const unmatched = scored.filter(r => !r.s.matched);
+      matched.sort((a, b) => {
+        if (a.s.bestIndex !== b.s.bestIndex) return a.s.bestIndex - b.s.bestIndex;
+        if (a.s.termMatches !== b.s.termMatches) return b.s.termMatches - a.s.termMatches;
+        return a.item.order - b.item.order;
+      });
+      unmatched.sort((a, b) => a.item.order - b.item.order);
+      return {
+        hasQuery: terms.length > 0,
+        matchedCount: matched.length,
+        list: matched.map(r => r.item).concat(unmatched.map(r => r.item))
+      };
+    }
+
+    function render(query) {
+      const res = compute(query);
+      view = res.list;
+
+      if (countEl) {
+        if (!res.hasQuery) {
+          countEl.textContent = items.length + (items.length === 1 ? " DESIGN" : " DESIGNS");
+        } else {
+          countEl.textContent = res.matchedCount + (res.matchedCount === 1 ? " MATCH" : " MATCHES");
+        }
+      }
+
+      if (!view.length) {
+        grid.innerHTML = `<p class="gallery__empty">No designs to show.</p>`;
+        return;
+      }
+
+      grid.innerHTML = view.map((item, i) => {
+        const isDim = res.hasQuery && i >= res.matchedCount;
+        const tags = item.tags.map(t => `<span class="gallery__tag">${escape(t)}</span>`).join("");
+        return `
+          <button class="gallery__item${isDim ? " is-dimmed" : ""}" type="button"
+                  data-index="${i}" aria-label="View ${escape(item.title)}">
+            <span class="gallery__frame">
+              <img src="${escape(item.src)}" alt="${escape(item.title)}"
+                   loading="lazy" data-fallback-title="${escape(item.title)}">
+            </span>
+            <span class="gallery__caption">
+              <span class="gallery__title">${escape(item.title)}</span>
+              <span class="gallery__tags">${tags}</span>
+            </span>
+          </button>`;
+      }).join("");
+
+      bindFallbacks(grid);
+    }
+
+    /* ---------- Lightbox / full-screen viewer ---------- */
+    const lb = document.createElement("div");
+    lb.className = "lightbox";
+    lb.setAttribute("aria-hidden", "true");
+    lb.innerHTML = `
+      <div class="lightbox__backdrop" data-lb-close></div>
+      <div class="lightbox__dialog" role="dialog" aria-modal="true" aria-label="Image viewer">
+        <button class="lightbox__close" type="button" data-lb-close aria-label="Close viewer">&#10005;</button>
+        <button class="lightbox__nav lightbox__nav--prev" type="button" data-lb-prev aria-label="Previous image">&#8249;</button>
+        <figure class="lightbox__figure">
+          <img class="lightbox__img" alt="">
+          <figcaption class="lightbox__caption">
+            <span class="lightbox__title"></span>
+            <span class="lightbox__tags"></span>
+            <span class="lightbox__counter mono"></span>
+          </figcaption>
+        </figure>
+        <button class="lightbox__nav lightbox__nav--next" type="button" data-lb-next aria-label="Next image">&#8250;</button>
+      </div>`;
+    document.body.appendChild(lb);
+
+    const lbImg = lb.querySelector(".lightbox__img");
+    const lbTitle = lb.querySelector(".lightbox__title");
+    const lbTags = lb.querySelector(".lightbox__tags");
+    const lbCounter = lb.querySelector(".lightbox__counter");
+    let current = -1;
+
+    function show(index) {
+      if (!view.length) return;
+      current = (index + view.length) % view.length;
+      const item = view[current];
+      lbImg.src = item.src;
+      lbImg.alt = item.title;
+      lbTitle.textContent = item.title;
+      lbTags.innerHTML = item.tags.map(t => `<span class="gallery__tag">${escape(t)}</span>`).join("");
+      lbCounter.textContent = (current + 1) + " / " + view.length;
+    }
+
+    function open(index) {
+      show(index);
+      lb.classList.add("is-open");
+      lb.setAttribute("aria-hidden", "false");
+      document.body.classList.add("lightbox-open");
+      lb.querySelector(".lightbox__close").focus();
+    }
+
+    function close() {
+      lb.classList.remove("is-open");
+      lb.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("lightbox-open");
+      current = -1;
+    }
+
+    function step(delta) {
+      if (current === -1) return;
+      show(current + delta);
+    }
+
+    grid.addEventListener("click", function (e) {
+      const btn = e.target.closest(".gallery__item");
+      if (!btn || !grid.contains(btn)) return;
+      open(parseInt(btn.getAttribute("data-index"), 10) || 0);
+    });
+
+    lb.addEventListener("click", function (e) {
+      if (e.target.closest("[data-lb-close]")) { close(); return; }
+      if (e.target.closest("[data-lb-prev]"))  { step(-1); return; }
+      if (e.target.closest("[data-lb-next]"))  { step(1);  return; }
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (!lb.classList.contains("is-open")) return;
+      if (e.key === "Escape")      { close(); }
+      else if (e.key === "ArrowLeft")  { step(-1); }
+      else if (e.key === "ArrowRight") { step(1); }
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener("input", function () {
+        render(this.value);
+      });
+    }
+
+    render(searchInput ? searchInput.value : "");
+  }
+
   /* ---------- SHA-256 helper used by vault and hash-tool ---------- */
   async function sha256(text) {
     const buf = new TextEncoder().encode(text);
@@ -360,6 +551,7 @@
     renderTicker,
     renderFooter,
     embedReel,
+    initDesignGallery,
     imageWithFallback,
     bindFallbacks,
     bindMailtoFallbacks,

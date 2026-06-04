@@ -33,7 +33,18 @@
       <p class="headline__blurb" id="hl-blurb"></p>
     </section>
 
-    <section class="project-grid" id="project-grid" aria-label="Projects"></section>
+    <section class="gallery" aria-label="Design gallery">
+      <div class="gallery__bar">
+        <div class="gallery__search">
+          <span class="gallery__search-icon" aria-hidden="true"></span>
+          <input id="gallery-search" type="search" class="gallery__search-input"
+                 placeholder="SEARCH — fire, water, smoke, magic…"
+                 autocomplete="off" spellcheck="false" aria-label="Search designs">
+        </div>
+        <span class="gallery__count mono" id="gallery-count" aria-live="polite"></span>
+      </div>
+      <div class="gallery__grid" id="gallery-grid"></div>
+    </section>
 
   </main>
 
@@ -51,30 +62,12 @@
 
       window.HR.renderTicker(["DESIGN LAB","CONCEPT","COLOR","CHARS","FX","SKETCH"], ["VOL · 02"]);
 
-      const grid = document.getElementById("project-grid");
-      const projects = C.projects || [];
-      const esc = window.HR.escape;
-      grid.innerHTML = projects.map((p, i) => {
-        const num = String(i + 1).padStart(2, "0");
-        const isFallback = !p.cover;
-        const cover = isFallback
-          ? `<span>${esc(p.title)}</span>`
-          : `<img src="${esc(p.cover)}" alt="${esc(p.title)}" data-fallback-title="${esc(p.title)}">`;
-        return `
-          <a class="project-card" href="project.html?id=${encodeURIComponent(p.id)}" aria-label="${esc(p.title)}">
-            <div class="project-card__cover ${isFallback ? "is-fallback" : ""}">${cover}</div>
-            <div class="project-card__meta">
-              <div>
-                <h3>${esc(p.title)}</h3>
-                <span class="sub">${esc(p.subtitle || "")}</span>
-              </div>
-              <span class="num">N° ${num}</span>
-            </div>
-          </a>
-        `;
-      }).join("");
-
-      window.HR.bindFallbacks(grid);
+      window.HR.initDesignGallery({
+        grid:   "#gallery-grid",
+        search: "#gallery-search",
+        count:  "#gallery-count",
+        items:  C.designGallery || []
+      });
     });
   </script>
 

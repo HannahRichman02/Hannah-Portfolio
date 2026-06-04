@@ -151,8 +151,61 @@ window.SITE_CONTENT = {
     headlineTop: "THE",
     headlineBig: "DESIGN",
     headlineSub: "LAB",
-    blurb: "Click on any category below to see my variety of different fx designs for both project and personal work."
+    blurb: "A gallery of my FX designs from project and personal work. Use the search bar to filter by anything you like — fire, water, smoke, magic — and click any image to view it up close."
   },
+
+  /* ============================================================
+     DESIGN GALLERY  (design.html)
+     ------------------------------------------------------------
+     The flat gallery of individual images on the Design page.
+     Click any image on the site to open the full-screen viewer,
+     where you can arrow left/right through everything. The search
+     bar filters and re-sorts this list by relevancy.
+
+     Each image has:
+       src   - the image path. Drop a file in that folder with that
+               exact name (or change the path) and it shows up.
+       title - the name shown under the image and in the viewer.
+       tags  - words people can search for. THE ORDER MATTERS:
+               put the most important word FIRST. When someone
+               searches, an image whose match is on an EARLIER tag
+               is shown ABOVE an image whose match is on a LATER
+               tag. (So if "fire" is the 1st tag on one image and
+               the 4th tag on another, searching "fire" lists the
+               first image higher.) Images that match nothing are
+               still shown — just dimmed and pushed to the bottom.
+
+     To add an image: copy one whole block (between { and }) and
+     paste it inside the [ ] below, then change every value. Add a
+     comma after every closing curly except the last one.
+     ============================================================ */
+  designGallery: [
+    { src: "assets/images/Designs/Fire/FX_Design_Fire2.png",        title: "Firewatchers",        tags: ["fire", "flames", "character", "project", "warm"] },
+    { src: "assets/images/Designs/Fire/FX_Design_FireComp4.png",    title: "Fire Composite",      tags: ["fire", "flames", "composite", "project", "warm"] },
+    { src: "assets/images/Designs/Fire/FX_Design_Fire1.png",        title: "Fire Study I",        tags: ["fire", "flames", "study", "hand-drawn", "warm"] },
+    { src: "assets/images/Designs/Fire/FX_Design_Fire3.png",        title: "Fire Study III",      tags: ["fire", "flames", "study", "smoke", "warm"] },
+    { src: "assets/images/Designs/Fire/Fire.png",                   title: "Fireball",            tags: ["fire", "flames", "explosion", "warm"] },
+    { src: "assets/images/Designs/Fire/Fire_001.png",               title: "Fire",                tags: ["fire", "flames", "smoke", "warm"] },
+    { src: "assets/images/Designs/Fire/Fire_002.png",               title: "Fire",                tags: ["fire", "flames", "glow", "warm"] },
+    { src: "assets/images/Designs/Fire/Fire_003.png",               title: "Fire",                tags: ["fire", "flames", "smoke", "warm"] },
+    { src: "assets/images/Designs/Misc/Magic_001.png",              title: "Magic Beam",          tags: ["magic", "beam", "glow", "purple", "blast", "boom"] },
+    { src: "assets/images/Designs/Misc/Lightning_001.png",          title: "Lightning",           tags: ["lightning", "glow", "electricity", "electric", "blue"] },
+    { src: "assets/images/Designs/Misc/Lightning_002.png",          title: "Lightning",           tags: ["lightning", "glow", "electricity", "electric", "green"] },
+    { src: "assets/images/Designs/Misc/Lightning_003.png",          title: "Lightning",           tags: ["lightning", "glow", "electricity", "electric"] },
+    { src: "assets/images/Designs/Water/Water_Running.png",         title: "Running Water",       tags: ["water", "flow", "splash", "cool", "blue"] },
+    { src: "assets/images/Designs/Water/Water_Fall.png",            title: "Waterfall",           tags: ["water", "waterfall", "splash", "cool", "blue"] },
+    { src: "assets/images/Designs/Water/Water_Splash_001.png",      title: "Water Splash",        tags: ["water", "ocean", "splash", "bubbles", "blue"] },
+    { src: "assets/images/Designs/Water/Ocean_001.png",             title: "Ocean",               tags: ["water", "ocean", "waves", "cool", "blue"] },
+    { src: "assets/images/Designs/Water/Water_Splash_002.png",      title: "Ocean",               tags: ["water", "ocean", "splash", "cool", "blue"] },
+    { src: "assets/images/Designs/Smoke/Explosion.png",             title: "Explosion",           tags: ["smoke", "explosion", "dust", "fx", "warm"] },
+    { src: "assets/images/Designs/Smoke/Blue_Purple.png",           title: "Blue & Purple Smoke", tags: ["smoke", "magic", "cool", "purple", "blue"] },
+    { src: "assets/images/Designs/Smoke/Magic_Column_Smoke.png",    title: "Magic Column",        tags: ["smoke", "magic", "column", "fx", "cool"] },
+    { src: "assets/images/Designs/Smoke/Grenade_Designs0085.png",   title: "Grenade Smoke 085",   tags: ["smoke", "grenade", "dust", "project", "gray"] },
+    { src: "assets/images/Designs/Smoke/Smoke_002.png",             title: "Smoke",               tags: ["smoke", "cloud", "dust", "explosion", "warm"] },
+    { src: "assets/images/Designs/Smoke/Explosion_001.png",         title: "Explosion",           tags: ["smoke", "explosion", "dust", "lightning", "purple"] },
+    { src: "assets/images/Designs/Smoke/Explosion_002.png",         title: "Explosion",           tags: ["smoke", "explosion", "dust", "boom", "gray"] },
+    { src: "assets/images/Designs/Smoke/Grenade_Designs0139.png",   title: "Grenade Smoke 139",   tags: ["smoke", "grenade", "dust", "project", "gray"] }
+  ],
 
   /* ============================================================
      PROJECTS  (shown on design.html, opened on project.html)
